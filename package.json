@@ -20,7 +20,7 @@
     "we-plugin-form": "wejs/we-plugin-form",
     "we-test-tools": "wejs/we-test-tools"
   },
-  "repository": "wejs/we-plugin-acl.git",
-  "author": "Alberto Souza <contato@albertosouza.net>"  ,
+  "repository": "wejs/we-plugin-acl",
+  "author": "Alberto Souza <contato@albertosouza.net>",
   "license": "MIT"
 }
