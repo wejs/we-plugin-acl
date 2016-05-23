@@ -1,0 +1,26 @@
+{
+  "name": "we-plugin-acl",
+  "description": "Role-based access control (RBAC)",
+  "version": "1.0.0",
+  "main": "plugin.js",
+  "scripts": {
+    "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
+    "coverage": "NODE_ENV=test LOG_LV=info node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports -R spec test/bootstrap.js test/**/*.test.js"
+  },
+  "dependencies": {
+    "we-core-acl": "1.2.0"
+  },
+  "devDependencies": {
+    "fs-extra": "^0.18.2",
+    "mocha": "^2.2.5",
+    "rimraf": "^2.3.4",
+    "sinon": "^1.17.4",
+    "supertest": "^1.0.1",
+    "we-core": "wejs/we-core",
+    "we-plugin-form": "wejs/we-plugin-form",
+    "we-test-tools": "wejs/we-test-tools"
+  },
+  "repository": "wejs/we-plugin-acl.git",
+  "author": "Alberto Souza <contato@albertosouza.net>"  ,
+  "license": "MIT"
+}
