@@ -1,6 +1,6 @@
 {
   "name": "we-plugin-acl",
-  "description": "Role-based access control (RBAC)",
+  "description": "Role-based access control (RBAC) for we.js framework",
   "version": "1.0.0",
   "main": "plugin.js",
   "scripts": {
@@ -11,7 +11,9 @@
     "we-core-acl": "1.2.0"
   },
   "devDependencies": {
+    "express-mysql-session": "^1.0.0",
     "fs-extra": "^0.18.2",
+    "istanbul": "^0.4.3",
     "mocha": "^2.2.5",
     "mysql": "^2.10.2",
     "rimraf": "^2.3.4",
@@ -22,6 +24,12 @@
     "we-plugin-user": "wejs/we-plugin-user",
     "we-test-tools": "wejs/we-test-tools"
   },
+  "keywords": [
+    "we.js",
+    "plugin",
+    "ACL",
+    "RBAC"
+  ],
   "repository": "wejs/we-plugin-acl",
   "author": "Alberto Souza <contato@albertosouza.net>",
   "license": "MIT"
