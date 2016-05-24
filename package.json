@@ -13,11 +13,13 @@
   "devDependencies": {
     "fs-extra": "^0.18.2",
     "mocha": "^2.2.5",
+    "mysql": "^2.10.2",
     "rimraf": "^2.3.4",
     "sinon": "^1.17.4",
     "supertest": "^1.0.1",
     "we-core": "wejs/we-core",
-    "we-plugin-form": "wejs/we-plugin-form",
+    "we-plugin-auth": "wejs/we-plugin-auth",
+    "we-plugin-user": "wejs/we-plugin-user",
     "we-test-tools": "wejs/we-test-tools"
   },
   "repository": "wejs/we-plugin-acl",
