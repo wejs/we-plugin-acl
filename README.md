@@ -1,4 +1,4 @@
-# Role-based access control (RBAC) :key:
+# We.js Role-based access control (RBAC) :key:
 
 [![npm version](https://badge.fury.io/js/we-plugin-acl.svg)](https://badge.fury.io/js/we-plugin-acl) [![Build Status](https://travis-ci.org/wejs/we-plugin-acl.svg?branch=master)](https://travis-ci.org/wejs/we-plugin-acl) [![Coverage Status](https://coveralls.io/repos/github/wejs/we-plugin-acl/badge.svg?branch=master)](https://coveralls.io/github/wejs/we-plugin-acl?branch=master)
 
