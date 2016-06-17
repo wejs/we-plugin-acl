@@ -230,6 +230,30 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       });
     }
 
+    we.db.modelsConfigs.user.options.instanceMethods.removeRole = function removeRole(role) {
+      if (typeof role == 'object') {
+        role = role.name;
+      }
+
+      var self = this;
+
+      return new we.db.Sequelize
+      .Promise(function removeRolesPromisse(resolve, reject){
+
+        var roles = self.roles;
+
+        var i = roles.indexOf(role);
+        // skip if this user dont have the role
+        if (i == -1) { return resolve() }
+        // remove the role
+        roles.splice(i, 1)
+        // update the array
+        self.roles = roles;
+        // save
+        self.save().then(resolve).catch(reject);
+      });
+    }
+
     done();
   }
 
