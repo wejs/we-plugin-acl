@@ -163,8 +163,13 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   plugin.events.on('we:after:load:plugins', function (we) {
     // access controll list
     we.acl = new ACL();
-  });
+    // override default write config to use the we.js setConfig
+    we.acl.writeRolesToConfigFile = function writeRolesToConfigFile (done) {
+      var roles = this.exportRoles()
 
+      we.setConfig('roles', roles, done)
+    }
+  })
 
   plugin.extendUserModel = function extendUserModel(we, done) {
 
