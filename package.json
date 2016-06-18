@@ -36,7 +36,6 @@
   "license": "MIT",
   "wejs": {
     "dependencies": {
-      "we-plugin-acl": true,
       "we-plugin-auth": true,
       "we-plugin-user": true
     }
