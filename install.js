@@ -23,8 +23,8 @@ module.exports = {
           done();
         })
       },
-      function exportDefaultRoles(done) {
-        we.setConfig('roles', we.acl.exportRoles, done)
+      function exportDefaultRoles (done) {
+        we.setConfig('roles', we.acl.exportRoles(), done)
       }
     ], done)
   }
