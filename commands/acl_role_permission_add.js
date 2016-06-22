@@ -5,6 +5,7 @@ module.exports = function aclRolePermissionAddCommand (program) {
 
   program
   .command('acl:role:permission:add <roleName> <permission>')
+  .alias('arpa')
   .description('Add one permission in role')
   .action(function (roleName, permission) {
     var cJSON,

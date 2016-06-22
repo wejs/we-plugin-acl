@@ -4,6 +4,7 @@ module.exports = function aclRolePermissionRmCommand (program, helpers) {
 
   program
   .command('acl:role:permission:rm <roleName> <permission>')
+  .alias('arpr')
   .description('Remove one permission in role')
   .action(function run (roleName, permission) {
     we = helpers.getWe()
