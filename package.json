@@ -1,7 +1,7 @@
 {
   "name": "we-plugin-acl",
   "description": "Role-based access control (RBAC) for We.js framework",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "main": "plugin.js",
   "scripts": {
     "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
