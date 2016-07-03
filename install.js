@@ -18,7 +18,7 @@ module.exports = {
           done();
         })
         .catch(function (err) {
-          we.log.warn('On add user roles:', err);
+          we.log.warn('On add user roles:', String(err));
           done();
         })
       },
