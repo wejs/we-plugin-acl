@@ -35,6 +35,10 @@
   "author": "Alberto Souza <contato@albertosouza.net>",
   "license": "MIT",
   "wejs": {
+    "plugins": {
+      "we-plugin-auth": true,
+      "we-plugin-user": true
+    },
     "dependencies": {
       "we-plugin-auth": true,
       "we-plugin-user": true
