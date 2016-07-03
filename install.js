@@ -18,8 +18,7 @@ module.exports = {
           done();
         })
         .catch(function (err) {
-          // if already exists will throw error and skip it
-          // console.log(err)
+          we.log.warn('On add user roles:', err);
           done();
         })
       },
@@ -29,4 +28,3 @@ module.exports = {
     ], done)
   }
 };
-
