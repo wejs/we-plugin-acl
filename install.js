@@ -15,7 +15,8 @@ module.exports = {
           allowNull: false
         })
         .then(function () {
-          done();
+          done()
+          return null
         })
         .catch(function (err) {
           we.log.warn('On add user roles:', String(err));

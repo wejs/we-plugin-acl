@@ -21,11 +21,10 @@ module.exports = {
     res.locals.metadata.count = permissions.length;
     res.locals.roles =  we.acl.roles;
 
-    if (req.accepts('json')) {
-      res.send({ role: res.locals.roles });
-    } else {
+    if (req.accepts('hmtl')) {
       res.ok();
+    } else {
+      res.send({ role: res.locals.roles });
     }
-
   }
 };

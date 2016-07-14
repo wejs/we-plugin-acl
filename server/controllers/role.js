@@ -52,7 +52,8 @@ module.exports = {
 
     we.db.models.user.findOne({
       where: { id: req.params.userId }
-    }).then(function (u){
+    })
+    .then(function (u){
       if (!u) return next();
 
       res.locals.data = u;
@@ -83,15 +84,20 @@ module.exports = {
 
         u.setRoles(rolesToSave)
         .then(function () {
-          res.addMessage('success', 'role.updateUserRoles.success');
-          res.goTo(req.url);
-        }).catch(req.queryError);
+          res.addMessage('success', 'role.updateUserRoles.success')
+          res.goTo(req.url)
+          return null
+        })
+        .catch(req.queryError);
       } else {
         res.locals.roles = we.acl.roles;
         res.locals.rolesTable = buildUserRolesVar(res, u, we);
         res.ok();
       }
-    }).catch(res.queryError);
+
+      return null
+    })
+    .catch(res.queryError);
   },
 
   /**
