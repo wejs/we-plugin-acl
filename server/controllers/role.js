@@ -53,8 +53,13 @@ module.exports = {
     we.db.models.user.findOne({
       where: { id: req.params.userId }
     })
-    .then(function (u){
-      if (!u) return next();
+    .nodeify(function (err, u) {
+      if (err) return res.queryError(err);
+
+      if (!u) {
+        next();
+        return null;
+      }
 
       res.locals.data = u;
 
@@ -83,21 +88,18 @@ module.exports = {
         res.locals.rolesTable = buildUserRolesVar(res, u, we);
 
         u.setRoles(rolesToSave)
-        .then(function () {
+        .nodeify(function (err) {
+          if (err) return res.queryError(err)
+
           res.addMessage('success', 'role.updateUserRoles.success')
           res.goTo(req.url)
-          return null
         })
-        .catch(req.queryError);
       } else {
         res.locals.roles = we.acl.roles;
         res.locals.rolesTable = buildUserRolesVar(res, u, we);
         res.ok();
       }
-
-      return null
     })
-    .catch(res.queryError);
   },
 
   /**

@@ -84,7 +84,9 @@ describe('ACLFeature', function() {
       salvedUser.addRole('administrator')
       .then(function () {
         done();
-      });
+        return null
+      })
+      .catch(done)
     });
 
     it('get /user/:id should return user for admin', function (done) {
