@@ -1,11 +1,11 @@
 /**
  * Main ACL file
  */
-var ACL = require('we-core-acl');
-var path = require('path');
+const ACL = require('we-core-acl'),
+  path = require('path');
 
 module.exports = function loadPlugin(projectPath, Plugin) {
-  var plugin = new Plugin(__dirname);
+  const plugin = new Plugin(__dirname);
 
   plugin.setConfigs({
     // auth settings
@@ -104,72 +104,71 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   });
 
   plugin.setRoutes({
-    'get /admin/user/:userId([0-9]+)/roles': {
+    'get /acl/user/:userId([0-9]+)/roles': {
       'titleHandler'  : 'i18n',
       'titleI18n'     : 'admin.user.roles',
       'controller'    : 'role',
       'action'        : 'updateUserRoles',
       'model'         : 'user',
       'permission'    : 'manage_role',
-      'template'      : 'admin/role/updateUserRoles'
+      'responseType'  : 'json'
     },
-    'post /admin/user/:userId([0-9]+)/roles': {
+    'post /acl/user/:userId([0-9]+)/roles': {
       'titleHandler'  : 'i18n',
       'titleI18n'     : 'admin.user.roles',
       'controller'    : 'role',
       'action'        : 'updateUserRoles',
       'model'         : 'user',
       'permission'    : 'manage_role',
-      'template'      : 'admin/role/updateUserRoles'
+      'responseType'  : 'json'
     },
-    'get /admin/permission': {
+    'get /acl/permission': {
       'titleHandler'  : 'i18n',
       'titleI18n'     : 'permission_manage',
       'name'          : 'permission_manage',
       'controller'    : 'permission',
       'action'        : 'manage',
-      'template'      : 'admin/permission/index',
       'permission'    : 'manage_permissions'
     },
-    'post /admin/role/:roleName/permissions/:permissionName': {
+    'post /acl/role/:roleName/permissions/:permissionName': {
       'controller'    : 'role',
       'action'        : 'addPermissionToRole',
       'model'         : 'role',
       'permission'    : 'manage_permissions'
     },
-    'delete /admin/role/:roleName/permissions/:permissionName': {
+    'delete /acl/role/:roleName/permissions/:permissionName': {
       'controller'    : 'role',
       'action'        : 'removePermissionFromRole',
       'model'         : 'role',
       'permission'    : 'manage_permissions'
     },
-    'get /admin/role': {
+    'get /acl/role': {
       'name'          : 'admin.role.find',
       'controller'    : 'role',
       'action'        : 'find',
       'model'         : 'role',
       'permission'    : 'manage_permissions',
-      'template'      : 'admin/role/find'
+      'responseType'  : 'json'
     },
-    'post /admin/role': {
+    'post /acl/role': {
       'controller'    : 'role',
       'action'        : 'find',
       'model'         : 'role',
       'permission'    : 'manage_permissions',
-      'template'      : 'admin/role/find'
+      'responseType'  : 'json'
     }
   });
 
-  plugin.events.on('we:after:load:plugins', function (we) {
+  plugin.events.on('we:after:load:plugins', (we)=> {
     // access controll list
     we.acl = new ACL();
     // override default write config to use the we.js setConfig
     we.acl.writeRolesToConfigFile = function writeRolesToConfigFile (done) {
-      var roles = this.exportRoles()
+      const roles = this.exportRoles();
 
-      we.setConfig('roles', roles, done)
-    }
-  })
+      we.setConfig('roles', roles, done);
+    };
+  });
 
   plugin.extendUserModel = function extendUserModel(we, done) {
 
@@ -177,27 +176,24 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       type: we.db.Sequelize.TEXT,
       formFieldType: null,
       skipSanitizer: true,
-      get: function()  {
+      get()  {
         if (this.getDataValue('roles'))
           return JSON.parse( this.getDataValue('roles') );
         return [];
       },
-      set: function(object) {
+      set(object) {
         if (typeof object == 'object') {
           this.setDataValue('roles', JSON.stringify(object));
         } else {
           throw new Error('invalid error in user roles value: ', object);
         }
       }
-    }
+    };
 
     we.db.modelsConfigs.user.options.instanceMethods.getRoles = function getRoles() {
-      var self = this;
       return new we.db.Sequelize
-      .Promise(function getRolesPromisse(resolve){
-        resolve(self.roles);
-      });
-    }
+      .Promise( (resolve)=> { resolve(this.roles); });
+    };
 
     we.db.modelsConfigs.user.options.instanceMethods.setRoles = function setRoles(rolesToSave) {
       var self = this;
@@ -206,19 +202,19 @@ module.exports = function loadPlugin(projectPath, Plugin) {
         self.roles = rolesToSave;
         self.save().then(resolve).catch(reject);
       });
-    }
+    };
 
     we.db.modelsConfigs.user.options.instanceMethods.addRole = function addRole(role) {
       if (typeof role == 'object') {
         role = role.name;
       }
 
-      var self = this;
+      const self = this;
 
       return new we.db.Sequelize
       .Promise(function setRolesPromisse(resolve, reject){
 
-        var roles = self.roles;
+        const roles = self.roles;
         // if this user already have the role, do nothing
         if (roles.indexOf(role) > -1) return resolve(self);
         // else add the role and save the user
@@ -228,61 +224,62 @@ module.exports = function loadPlugin(projectPath, Plugin) {
 
         self.save().then(resolve).catch(reject);
       });
-    }
+    };
 
     we.db.modelsConfigs.user.options.instanceMethods.removeRole = function removeRole(role) {
       if (typeof role == 'object') {
         role = role.name;
       }
 
-      var self = this;
+      const self = this;
 
       return new we.db.Sequelize
       .Promise(function removeRolesPromisse(resolve, reject){
 
-        var roles = self.roles;
+        const roles = self.roles;
 
-        var i = roles.indexOf(role);
+        let i = roles.indexOf(role);
         // skip if this user dont have the role
-        if (i == -1) { return resolve() }
+        if (i == -1) { return resolve(); }
         // remove the role
-        roles.splice(i, 1)
+        roles.splice(i, 1);
         // update the array
         self.roles = roles;
         // save
         self.save().then(resolve).catch(reject);
       });
-    }
+    };
 
     done();
-  }
+  };
 
   plugin.initACL = function initACL(we) {
     we.log.verbose('initACL step');
     we.acl.init(we, function afterInitAcl(){
       we.acl.setModelDateFieldPermissions(we);
     });
-  }
+  };
 
   plugin.addACLMiddleware = function addACLMiddleware(data) {
     // bind acl middleware
-    data.middlewares.push(data.we.acl.canMiddleware.bind({ config: data.config }))
-  }
+    data.middlewares.push(data.we.acl.canMiddleware.bind({ config: data.config }));
+  };
 
   plugin.crudPermissioPrefix = ['find', 'create', 'update', 'delete'];
 
   plugin.hooks.on('we:models:before:instance', plugin.extendUserModel);
   plugin.events.on('we:after:load:plugins', plugin.initACL);
   plugin.events.on('router:add:acl:middleware', plugin.addACLMiddleware);
-  plugin.events.on('we-core:before:bind:one:resource:route', function(data) {
+  plugin.events.on('we-core:before:bind:one:resource:route', (data)=> {
     // set crud permissions
-    plugin.crudPermissioPrefix.forEach(function(ai){
+    plugin.crudPermissioPrefix.forEach( (ai)=> {
       if (!data.we.config.permissions[ai+'_'+data.configuration.model]) {
         data.we.config.permissions[ai+'_'+data.configuration.model] = {
           'title': ai+'_'+data.configuration.model
-        }
+        };
       }
     });
   });
+
   return plugin;
 };

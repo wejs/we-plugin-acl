@@ -11,16 +11,16 @@ describe('permissionsFeature', function() {
     done();
   });
 
-  it ('get /admin/permission should return all permissions', function (done){
+  it ('get /acl/permission should return all permissions', function (done){
     request(http)
-    .get('/admin/permission')
+    .get('/acl/permission')
     .set('Accept', 'application/json')
     .end(function (err, res) {
       if (err) throw err;
 
-      assert(res.body.role);
+      assert(res.body.roles);
 
-      for(var name in res.body.role) {
+      for(var name in res.body.roles) {
         assert(we.acl.roles[name]);
       }
 

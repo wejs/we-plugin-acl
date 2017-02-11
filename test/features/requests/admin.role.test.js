@@ -39,7 +39,7 @@ describe('roleFeature', function () {
 
   });
 
-  it('get /admin/role should return roles list');
+  it('get /acl/role should return roles list');
 
-  it('post /admin/permission/role/create should create one role and add it in we.acl roles');
+  it('post /acl/permission/role/create should create one role and add it in we.acl roles');
 });

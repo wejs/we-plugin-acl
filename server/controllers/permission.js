@@ -6,25 +6,11 @@
  */
 
 module.exports = {
-  manage: function manage(req, res) {
-    var we = req.we;
-    var permissions = [];
-
-    Object.keys(we.config.permissions).forEach(function(pN){
-      we.config.permissions[pN].name = pN;
-      permissions.push( we.config.permissions[pN] );
+  manage(req, res) {
+    res.status(200)
+    .send({
+      roles: req.we.acl.roles,
+      permissions: req.we.config.permissions
     });
-
-    res.locals.data = permissions;
-    res.locals.permissions = permissions;
-
-    res.locals.metadata.count = permissions.length;
-    res.locals.roles =  we.acl.roles;
-
-    if (req.accepts('html')) {
-      res.ok();
-    } else {
-      res.send({ role: res.locals.roles });
-    }
   }
 };

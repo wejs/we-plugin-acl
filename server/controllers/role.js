@@ -6,19 +6,21 @@
  */
 
 module.exports = {
-  create: function create(req, res) {
-    var name = req.body.name;
-    var description = req.body.description;
+  create(req, res) {
+    const name = req.body.name,
+      description = req.body.description;
 
     if (req.method == 'POST') {
       req.we.acl.createRole({
         name: name, description: description
-      }, function (err, role) {
+      }, (err, role)=> {
         if (err) {
           req.we.log.error('role:create: error on create role', err);
           res.serverError();
         } else {
-          if (res.locals.redirectTo) return res.goTo(res.locals.redirectTo);
+          if (res.locals.redirectTo) {
+            return res.goTo(res.locals.redirectTo);
+          }
 
           res.ok(role);
         }
@@ -28,12 +30,12 @@ module.exports = {
     }
   },
 
-  find: function findAll(req, res, next) {
+  find(req, res, next) {
     res.locals.data =  {};
 
     res.locals.redirectTo = req.we.utils.getRedirectUrl(req, res);
 
-    for (var name in req.we.acl.roles) {
+    for (let name in req.we.acl.roles) {
       if (!req.we.acl.roles[name].isSystemRole)
         res.locals.data[name] = req.we.acl.roles[name];
     }
@@ -47,13 +49,14 @@ module.exports = {
     res.ok();
   },
 
-  updateUserRoles: function updateUserRoles(req, res, next) {
-    var we = req.we;
+  updateUserRoles(req, res, next) {
+    const we = req.we;
 
-    we.db.models.user.findOne({
+    we.db.models.user
+    .findOne({
       where: { id: req.params.userId }
     })
-    .nodeify(function (err, u) {
+    .nodeify( (err, u)=> {
       if (err) return res.queryError(err);
 
       if (!u) {
@@ -64,8 +67,8 @@ module.exports = {
       res.locals.data = u;
 
       if (req.method == 'POST') {
-        var rolesToSave = [];
-        var rn;
+        const rolesToSave = [];
+        let rn;
 
         // get role object related to id and skip invalid ids
         if (we.utils._.isArray(req.body.userRoles)) {
@@ -88,32 +91,32 @@ module.exports = {
         res.locals.rolesTable = buildUserRolesVar(res, u, we);
 
         u.setRoles(rolesToSave)
-        .nodeify(function (err) {
-          if (err) return res.queryError(err)
+        .nodeify( (err)=> {
+          if (err) return res.queryError(err);
 
-          res.addMessage('success', 'role.updateUserRoles.success')
-          res.goTo(req.url)
-        })
+          res.addMessage('success', 'role.updateUserRoles.success');
+          res.status(200).send();
+        });
       } else {
         res.locals.roles = we.acl.roles;
         res.locals.rolesTable = buildUserRolesVar(res, u, we);
         res.ok();
       }
-    })
+    });
   },
 
   /**
-   * Add permission to role action
+   * Add one permission to role action
    */
-  addPermissionToRole: function addPermissionToRole(req, res, next) {
-    var we = req.we;
+  addPermissionToRole(req, res, next) {
+    const we = req.we;
 
     if (
       !we.acl.roles[req.params.roleName] ||
       !we.acl.permissions[req.params.permissionName]
     ) return next();
 
-    we.acl.addPermissionToRole(req.params.roleName, req.params.permissionName, function(err) {
+    we.acl.addPermissionToRole(req.params.roleName, req.params.permissionName, (err)=> {
       if (err) return res.serverError(err);
       res.ok(we.acl.roles[req.params.roleName]);
     });
@@ -121,8 +124,8 @@ module.exports = {
   /**
    * remove permission from role action
    */
-  removePermissionFromRole: function(req, res, next) {
-    var we = req.we;
+  removePermissionFromRole(req, res, next) {
+    const we = req.we;
 
     if (!we.acl.roles[req.params.roleName]) {
       we.log.warn('Role not found: ',req.params.roleName);
@@ -134,15 +137,14 @@ module.exports = {
       return next();
     }
 
-    we.acl.removePermissionFromRole(req.params.roleName, req.params.permissionName, function(err) {
+    we.acl.removePermissionFromRole(req.params.roleName, req.params.permissionName, (err)=> {
       if (err) return res.serverError(err);
       res.deleted();
     });
   },
 
-  delete: function deleteRecord(req, res) {
-    req.we.acl.deleteRole(req.body.name,
-    function (err) {
+  delete(req, res) {
+    req.we.acl.deleteRole(req.body.name, (err)=> {
       if (err) {
         req.we.log.error('role:delete: error on delete role', err);
         return res.serverError();
@@ -156,13 +158,12 @@ module.exports = {
   }
 };
 
-
 function buildUserRolesVar(res, u, we) {
-  var checked, rolesTable = [];
+  let checked, rolesTable = [];
 
-  for (var roleName in we.acl.roles) {
+  for (let roleName in we.acl.roles) {
     checked = false;
-    for (var i = 0; i < u.roles.length; i++) {
+    for (let i = 0; i < u.roles.length; i++) {
       if (u.roles[i] === roleName) {
         checked = true;
         break;

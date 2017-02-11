@@ -70,17 +70,19 @@ describe('controllers.role', function () {
       controller.updateUserRoles(req, res);
     });
 
-    it('updateUserRoles action should run res.goTo for multiple valid userRoles', function (done) {
+    it('updateUserRoles action should run res.send for multiple valid userRoles', function (done) {
       var rolesIds = [
         we.acl.roles.administrator.id,
         we.acl.roles.authenticated.id
       ];
       var res = { locals: { data: role },
-      addMessage: function(){},
-      goTo: function() {
+      addMessage(){},
+      status() {
+        return this;
+      },
+      send() {
         assert(res.addMessage.called);
-        assert(res.goTo.called);
-        assert.equal(res.goTo.firstCall.args[0], '/role');
+        assert(res.send.called);
         done();
       }};
       var req = {
@@ -90,19 +92,18 @@ describe('controllers.role', function () {
         params: {  userId: user.id },
         url: '/role'
       };
-      sinon.spy(res, 'goTo');
+      sinon.spy(res, 'send');
       sinon.spy(res, 'addMessage');
       controller.updateUserRoles(req, res);
     });
 
-
-    it('updateUserRoles action should run res.goTo for single valid userRoles', function (done) {
+    it('updateUserRoles action should run res.send for single valid userRoles', function (done) {
       var res = { locals: { data: role },
-      addMessage: function(){},
-      goTo: function() {
+      addMessage(){},
+      status() { return this; },
+      send() {
         assert(res.addMessage.called);
-        assert(res.goTo.called);
-        assert.equal(res.goTo.firstCall.args[0], '/role');
+        assert(res.send.called);
         done();
       }};
       var req = {
@@ -112,7 +113,7 @@ describe('controllers.role', function () {
         params: {  userId: user.id },
         url: '/role'
       };
-      sinon.spy(res, 'goTo');
+      sinon.spy(res, 'send');
       sinon.spy(res, 'addMessage');
       controller.updateUserRoles(req, res);
     });

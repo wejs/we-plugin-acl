@@ -17,5 +17,5 @@ module.exports = function(we) {
     } else {
       return options.inverse(this);
     }
-  }
-}
+  };
+};
