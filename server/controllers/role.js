@@ -1,18 +1,32 @@
 /**
- * RolesController
- *
- * @module    :: Controller
- * @description :: Contains logic for handling requests.
+ * Roles controller
  */
 
 module.exports = {
+  /**
+   * Action for register one user role
+   *
+   * @apiName role.create
+   * @apiGroup role
+   *
+   * @apiParam {String} `name` Role name
+   * @apiParam {String} `description` Descrição do role
+   *
+   * @module Controller
+   *
+   * @param {Object} `req` Express.js request
+   * @param {Object} `res` Express.js response
+   *
+   * @successResponse 201
+   */
   create(req, res) {
     const name = req.body.name,
       description = req.body.description;
 
     if (req.method == 'POST') {
       req.we.acl.createRole({
-        name: name, description: description
+        name: name,
+        description: description
       }, (err, role)=> {
         if (err) {
           req.we.log.error('role:create: error on create role', err);
@@ -30,6 +44,19 @@ module.exports = {
     }
   },
 
+  /**
+   * Action for find all roles in this system
+   *
+   * @apiName role.find
+   * @apiGroup role
+   *
+   * @param {Object} req Express.js request
+   * @param {Object} res Express.js response
+   *
+   * @module Controller
+   *
+   * @successResponse 200
+   */
   find(req, res, next) {
     res.locals.data =  {};
 
@@ -49,6 +76,21 @@ module.exports = {
     res.ok();
   },
 
+  /**
+   * Action for update user roles
+   *
+   * @apiName role.updateUserRoles
+   * @apiGroup role
+   *
+   * @apiParam {Array} `userRoles` New user roles name array
+   *
+   * @module Controller
+   *
+   * @param {Object} `req` Express.js request
+   * @param {Object} `res` Express.js response
+   *
+   * @successResponse 200
+   */
   updateUserRoles(req, res, next) {
     const we = req.we;
 
@@ -107,6 +149,16 @@ module.exports = {
 
   /**
    * Add one permission to role action
+   *
+   * @apiName role.addPermissionToRole
+   * @apiGroup role
+   *
+   * @module Controller
+   *
+   * @param {Object} `req` Express.js request
+   * @param {Object} `res` Express.js response
+   *
+   * @successResponse 200
    */
   addPermissionToRole(req, res, next) {
     const we = req.we;
@@ -121,8 +173,19 @@ module.exports = {
       res.ok(we.acl.roles[req.params.roleName]);
     });
   },
+
   /**
-   * remove permission from role action
+   * Remove permission from role action
+   *
+   * @apiName role.removePermissionFromRole
+   * @apiGroup role
+   *
+   * @module Controller
+   *
+   * @param {Object} `req` Express.js request
+   * @param {Object} `res` Express.js response
+   *
+   * @successResponse 204
    */
   removePermissionFromRole(req, res, next) {
     const we = req.we;
@@ -143,6 +206,19 @@ module.exports = {
     });
   },
 
+  /**
+   * Delete one role
+   *
+   * @apiName role.delete
+   * @apiGroup role
+   *
+   * @module Controller
+   *
+   * @param {Object} `req` Express.js request
+   * @param {Object} `res` Express.js response
+   *
+   * @successResponse 200
+   */
   delete(req, res) {
     req.we.acl.deleteRole(req.body.name, (err)=> {
       if (err) {
@@ -158,6 +234,9 @@ module.exports = {
   }
 };
 
+/**
+ * Build user roles Var
+ */
 function buildUserRolesVar(res, u, we) {
   let checked, rolesTable = [];
 
