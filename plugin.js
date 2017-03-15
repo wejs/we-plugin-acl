@@ -133,27 +133,23 @@ module.exports = function loadPlugin(projectPath, Plugin) {
     'post /acl/role/:roleName/permissions/:permissionName': {
       'controller'    : 'role',
       'action'        : 'addPermissionToRole',
-      'model'         : 'role',
       'permission'    : 'manage_permissions'
     },
     'delete /acl/role/:roleName/permissions/:permissionName': {
       'controller'    : 'role',
       'action'        : 'removePermissionFromRole',
-      'model'         : 'role',
       'permission'    : 'manage_permissions'
     },
     'get /acl/role': {
       'name'          : 'admin.role.find',
       'controller'    : 'role',
       'action'        : 'find',
-      'model'         : 'role',
       'permission'    : 'manage_permissions',
       'responseType'  : 'json'
     },
     'post /acl/role': {
       'controller'    : 'role',
       'action'        : 'find',
-      'model'         : 'role',
       'permission'    : 'manage_permissions',
       'responseType'  : 'json'
     }
