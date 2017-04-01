@@ -26,7 +26,8 @@ module.exports = {
     if (req.method == 'POST') {
       req.we.acl.createRole({
         name: name,
-        description: description
+        description: description,
+        permissions: []
       }, (err, role)=> {
         if (err) {
           req.we.log.error('role:create: error on create role', err);
