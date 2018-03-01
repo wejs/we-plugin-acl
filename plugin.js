@@ -173,13 +173,30 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       formFieldType: null,
       skipSanitizer: true,
       get()  {
-        if (this.getDataValue('roles'))
-          return JSON.parse( this.getDataValue('roles') );
+        if (this.getDataValue('roles')) {
+          try {
+            return JSON.parse( this.getDataValue('roles') );
+          } catch(e) {
+            return [];
+          }
+        }
         return [];
       },
       set(object) {
         if (typeof object == 'object') {
           this.setDataValue('roles', JSON.stringify(object));
+        } else if (typeof object == 'string') {
+          try {
+            // test if is valid format
+            let nv = JSON.parse(object);
+            if (nv && Array.isArray(nv)) {
+              this.setDataValue('roles', object);
+            } else {
+              throw new Error('Invalid value');
+            }
+          } catch(e) {
+            throw new Error('invalid value in user.roles.set value: ', object);
+          }
         } else {
           throw new Error('invalid error in user roles value: ', object);
         }
