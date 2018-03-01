@@ -33,6 +33,6 @@ after(function (callback) {
   testTools.helpers.resetDatabase(we, callback);
 });
 
-after(function (callback) {
-  we.exit(callback);
+after(function () {
+  we.exit(process.exit);
 });
