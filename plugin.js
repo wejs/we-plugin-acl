@@ -172,6 +172,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       type: we.db.Sequelize.TEXT,
       formFieldType: null,
       skipSanitizer: true,
+      emberConfiguration: 'DS.attr()',
       get()  {
         if (this.getDataValue('roles')) {
           try {
