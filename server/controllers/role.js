@@ -112,19 +112,22 @@ module.exports = {
       if (req.method == 'POST') {
         const rolesToSave = [];
         let rn;
-
+        const UR = req.body.userRoles;
         // get role object related to id and skip invalid ids
-        if (we.utils._.isArray(req.body.userRoles)) {
+        if (we.utils._.isArray(UR)) {
           // multiple roles
           for (rn in we.acl.roles) {
-            if (req.body.userRoles.indexOf( we.acl.roles[rn].name ) > -1) {
+            if (
+              UR.indexOf( we.acl.roles[rn].name ) > -1 ||
+              UR.indexOf( rn ) > -1
+            ) {
               rolesToSave.push(rn);
             }
           }
         } else {
           // single role
           for (rn in we.acl.roles) {
-            if (req.body.userRoles == we.acl.roles[rn].name) {
+            if (UR == we.acl.roles[rn].name) {
               rolesToSave.push(rn);
               break;
             }

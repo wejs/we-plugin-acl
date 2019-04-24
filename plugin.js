@@ -167,8 +167,10 @@ module.exports = function loadPlugin(projectPath, Plugin) {
   });
 
   plugin.extendUserModel = function extendUserModel(we, done) {
+    const P = we.db.Sequelize.Promise,
+      MCU = we.db.modelsConfigs.user;
 
-    we.db.modelsConfigs.user.definition.roles = {
+    MCU.definition.roles = {
       type: we.db.Sequelize.TEXT,
       formFieldType: null,
       skipSanitizer: true,
@@ -204,29 +206,29 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       }
     };
 
-    we.db.modelsConfigs.user.options.instanceMethods.getRoles = function getRoles() {
+    MCU.options.instanceMethods.getRoles = function () {
       return new we.db.Sequelize
       .Promise( (resolve)=> { resolve(this.roles); });
     };
 
-    we.db.modelsConfigs.user.options.instanceMethods.setRoles = function setRoles(rolesToSave) {
-      var self = this;
-      return new we.db.Sequelize
-      .Promise(function setRolesPromisse(resolve, reject){
+    MCU.options.instanceMethods
+    .setRoles = function (rolesToSave) {
+      const self = this;
+      return new P(function (resolve, reject) {
         self.roles = rolesToSave;
         self.save().then(resolve).catch(reject);
       });
     };
 
-    we.db.modelsConfigs.user.options.instanceMethods.addRole = function addRole(role) {
+    MCU.options.instanceMethods
+    .addRole = function (role) {
       if (typeof role == 'object') {
         role = role.name;
       }
 
       const self = this;
 
-      return new we.db.Sequelize
-      .Promise(function setRolesPromisse(resolve, reject){
+      return new P(function (resolve, reject) {
 
         const roles = self.roles;
         // if this user already have the role, do nothing
@@ -240,7 +242,7 @@ module.exports = function loadPlugin(projectPath, Plugin) {
       });
     };
 
-    we.db.modelsConfigs.user.options.instanceMethods.removeRole = function removeRole(role) {
+    MCU.options.instanceMethods.removeRole = function (role) {
       if (typeof role == 'object') {
         role = role.name;
       }

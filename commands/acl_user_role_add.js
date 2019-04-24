@@ -20,7 +20,9 @@ module.exports = function aclUserRoleAdd (program, helpers) {
 
       if (! Number(userId) ) return doneAll('Invalid Uid');
 
-      we.db.models.user.findById(userId)
+      we.db.models.user.findOne({
+        where: { id: userId }
+      })
       .then( function (user) {
         user.addRole(roleName)
         .then(function() {
