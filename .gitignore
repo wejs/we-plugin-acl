@@ -3,6 +3,8 @@ test/locales
 node_modules
 coverage
 config
+.nyc_output
 *.log
-
+*.sqlite
+*.sql
 yarn.lock

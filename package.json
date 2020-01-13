@@ -5,23 +5,23 @@
   "main": "plugin.js",
   "scripts": {
     "test": "NODE_ENV=test LOG_LV=info ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js",
-    "coverage": "NODE_ENV=test LOG_LV=info node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -u exports -R spec test/bootstrap.js test/**/*.test.js"
+    "coverage": "NODE_ENV=test LOG_LV=info nyc ./node_modules/.bin/mocha test/bootstrap.js test/**/*.test.js -b"
   },
   "dependencies": {
     "we-core-acl": "^1.2.4"
   },
   "devDependencies": {
-    "express-mysql-session": "^2.1.0",
+    "connect-sqlite3": "^0.9.11",
+    "nyc": "^15.0.0",
+    "sqlite3": "^4.1.1",
     "fs-extra": "^8.1.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^6.2.0",
-    "mysql2": "^1.7.0",
+    "mocha": "^7.0.0",
     "sinon": "^7.4.2",
     "supertest": "^4.0.2",
-    "we-core": "^2",
-    "we-plugin-auth": "wejs/we-plugin-auth",
+    "we-core": "^3",
+    "we-plugin-auth": "^2.3.2",
     "we-plugin-user": "^2",
-    "we-test-tools": "wejs/we-test-tools"
+    "we-test-tools": "^1.0.0"
   },
   "keywords": [
     "we.js",

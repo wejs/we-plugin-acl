@@ -1,6 +1,5 @@
 module.exports = function aclUserRoleRm (program, helpers) {
-
-  var we
+  let we;
 
   program
   .command('acl:user:role:rm <userId> <roleName>')

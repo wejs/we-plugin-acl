@@ -10,7 +10,7 @@
 
 module.exports = function(we) {
   return function canHelper() {
-    var options = arguments[arguments.length-1];
+    const options = arguments[arguments.length-1];
 
     if (we.acl.canStatic(options.hash.permission, options.hash.roleNames)){
       return options.fn(this);

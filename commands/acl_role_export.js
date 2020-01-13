@@ -1,5 +1,5 @@
 module.exports = function exportRolesCommand (program, helpers) {
-  var we;
+  let we;
 
   program
   .command('acl:role:export')
@@ -20,7 +20,7 @@ module.exports = function exportRolesCommand (program, helpers) {
       }
 
       // write in configuration.json file
-      we.setConfig('roles', roles, doneAll)
+      we.setConfig('roles', roles, doneAll);
     });
 
     function doneAll(err) {
@@ -34,4 +34,4 @@ module.exports = function exportRolesCommand (program, helpers) {
       });
     }
   });
-}
+};

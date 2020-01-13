@@ -1,3 +1,4 @@
+config
 test
 files/uploads
 .jscsrc
@@ -6,3 +7,6 @@ files/uploads
 .travis.yml
 .gitignore
 *.log
+*.sqlite
+*.sql
+.nyc_output
